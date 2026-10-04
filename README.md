@@ -11,6 +11,7 @@ Frontend :
 
 Backend :
 - Hono (with proxy)
+- Zod
 - SQLite
 
 ### How to run
