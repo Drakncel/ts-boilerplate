@@ -1,0 +1,1 @@
+export const PAGES_AROUND = 2 as const;
