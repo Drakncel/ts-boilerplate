@@ -1,4 +1,6 @@
-import { useState, useReducer } from "react";
+import './App.css'
+
+import { useReducer } from "react";
 import { Toaster } from "./components/ui/toast";
 import Form from "./components/app/Form";
 import { List } from "./components/app/List";

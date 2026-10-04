@@ -27,7 +27,13 @@ export const Favorites = () => {
           ))}
         </div>
         {!!favorites?.length && (
-          <Button className="float-right cursor-pointer" onClick={() => clearFavorites && clearFavorites()}>Clear Favorites</Button>
+          <Button
+            variant="destructive"
+            className="float-right cursor-pointer"
+            onClick={() => clearFavorites && clearFavorites()}
+          >
+            Clear Favorites
+          </Button>
         )}
       </CardContent>
     </Card>

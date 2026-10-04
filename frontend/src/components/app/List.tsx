@@ -29,7 +29,7 @@ const fetchLinks = (pageNumber: number) =>
 
 export const List = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const { addFavorite } = useContext(FavoritesContext);
+  const { favorites, addFavorite } = useContext(FavoritesContext);
 
   const pagesQuery = useQuery({ queryKey: ["pages"], queryFn: fetchPages });
   const linksQuery = useQuery({
@@ -46,6 +46,11 @@ export const List = () => {
 
   const links = linksQuery?.data?.response || [];
 
+  const favoritesKeys = useMemo(
+    () => favorites?.map(({ key }) => key),
+    [favorites],
+  );
+
   return (
     <Card className="w-full max-w-md mt-6 lg:mt-0">
       <CardHeader>
@@ -57,14 +62,23 @@ export const List = () => {
             <span>No links to display</span>
           )}
           {links.map((l) => (
-            <div key={l.key} className="flex gap-8 items-center justify-between">
+            <div
+              key={l.key}
+              className="flex gap-8 items-center justify-between"
+            >
               <div className="mb-2">
                 <a target="_blank" href={l.value}>
                   {l.key} - {l.value}
                 </a>
               </div>
-              {addFavorite && (
-                <Button className="justify-self-end cursor-pointer" onClick={() => addFavorite(l)}>Add to favorites</Button>
+              {addFavorite && !favoritesKeys?.includes(l.key) && (
+                <Button
+                  variant="secondary"
+                  className="justify-self-end cursor-pointer"
+                  onClick={() => addFavorite(l)}
+                >
+                  Add to favorites
+                </Button>
               )}
             </div>
           ))}
@@ -72,14 +86,14 @@ export const List = () => {
         <Pagination>
           <PaginationContent>
             {pagesToDisplay.length > 1 && (
-              <PaginationItem>
+              <PaginationItem className="cursor-pointer">
                 <PaginationPrevious
                   onClick={() => setCurrentPage(currentPage - 1)}
                 />
               </PaginationItem>
             )}
             {pagesToDisplay.map((i) => (
-              <PaginationItem>
+              <PaginationItem className="cursor-pointer">
                 <PaginationLink
                   isActive={i === currentPage}
                   onClick={() => setCurrentPage(i)}
@@ -95,7 +109,7 @@ export const List = () => {
                 </PaginationItem>
               )}
             {pagesToDisplay.length > 1 && (
-              <PaginationItem>
+              <PaginationItem className="cursor-pointer">
                 <PaginationNext
                   onClick={() => setCurrentPage(currentPage + 1)}
                 />

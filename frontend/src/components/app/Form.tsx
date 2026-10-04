@@ -21,7 +21,10 @@ export const Form = () => {
   const postLink = async () => {
     setIsLoading(true);
 
-    const response = await post("/links", { key: key.current, value: value.current });
+    const response = await post("/links", {
+      key: key.current,
+      value: value.current,
+    });
     if (!response.success) {
       toast.add({ title: response.error });
     } else {
@@ -46,7 +49,7 @@ export const Form = () => {
             type="string"
             placeholder=""
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              key.current = e.target.value
+              (key.current = e.target.value)
             }
           />
         </Field>
@@ -57,7 +60,7 @@ export const Form = () => {
             type="string"
             placeholder=""
             onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              value.current = e.target.value
+              (value.current = e.target.value)
             }
           />
         </Field>
@@ -66,7 +69,7 @@ export const Form = () => {
           data-icon="inline-start"
           disabled={isLoading}
           className="mt-6 float-right cursor-pointer"
-          variant="outline"
+          variant="default"
         >
           {isLoading && <Spinner />}
           Create
