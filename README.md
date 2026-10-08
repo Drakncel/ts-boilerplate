@@ -8,6 +8,7 @@ Frontend :
 - Vite
 - Tailwind + Shadcn
 - TanStack Query
+- React Router
 
 Backend :
 - Hono (with proxy)
