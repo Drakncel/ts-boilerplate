@@ -3,7 +3,7 @@ import { NavLink, Outlet } from "react-router";
 export const Menu = () => {
   return (
     <div>
-      <div className="grid md:grid-cols-1 lg:grid-cols-2 place-items-center items-start mt-6">
+      <div className="grid md:grid-cols-4 lg:grid-cols-6 place-items-center items-start mt-6">
         <NavLink
           to="/app/"
           end
@@ -17,6 +17,13 @@ export const Menu = () => {
           className={({ isActive }) => (isActive ? "underline" : "")}
         >
           Shortener
+        </NavLink>
+        <NavLink
+          to="/app/magic"
+          end
+          className={({ isActive }) => (isActive ? "underline" : "")}
+        >
+          Magic
         </NavLink>
       </div>
       <Outlet />

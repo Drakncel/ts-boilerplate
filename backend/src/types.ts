@@ -1,5 +1,12 @@
 import * as z from 'zod'
 
+export type Magic = {
+  id?: number
+}
+
+export const magicSchema = z.object({
+  id: z.int().optional(),
+})
 
 export type Link = {
     id?: number;

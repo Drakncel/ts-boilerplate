@@ -6,8 +6,9 @@ import { isValidHttpUrl, isValidKey } from "./validation.js";
 import { proxy } from "hono/proxy";
 import { zValidator } from "@hono/zod-validator";
 import * as z from "zod";
-import { getCount, getLinkByKey, getLinkPage, initDB, insertLink, seedDB } from "./repo.js";
+import { getCount, getLinkByKey, getLinkPage, getMagic, initDB, insertLink, insertMagic, seedDB } from "./repo.js";
 import { PAGE_SIZE } from "./constants.js";
+import { delay } from "./utils.js";
 
 initDB();
 
@@ -47,7 +48,7 @@ app.post(
     }
 
     try {
-      insertLink(body)
+      await insertLink(body)
   
       c.status(201);
       return c.json(body);
@@ -94,6 +95,33 @@ app.post("/api/links/seed", (c) => {
   c.status(201);
   return c.json({ message: "Done" });
 });
+
+// MAGIC
+app.get(
+  "/api/magic",
+  (c) => {
+    const result = getMagic()
+
+    c.status(200);
+    return c.json(result);
+  },
+);
+
+app.post(
+  "/api/magic",
+  async (c) => {
+    try {
+      // MAGIC TAKES TIME !
+      await delay(5000)
+      await insertMagic()
+  
+      c.status(201);
+      return c.text('Created')
+    } catch {
+      throw new HTTPException(500, { message: "An unexpected error occured" });
+    }
+  },
+);
 
 // FRONTEND
 app.get("/app", (c) => c.redirect("/app/"));

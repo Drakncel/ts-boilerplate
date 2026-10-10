@@ -1,10 +1,13 @@
 import type { SQLOutputValue } from "node:sqlite";
 import { DB } from "./db.js";
-import { type Link, linkSchema } from "./types.js";
+import { type Link, linkSchema, type Magic, magicSchema } from "./types.js";
 import { PAGE_SIZE } from "./constants.js";
 
 const validateLink = (dbObject?: Record<string, SQLOutputValue>): Link =>
   linkSchema.parse(dbObject);
+
+const validateMagic = (dbObject?: Record<string, SQLOutputValue>): Magic =>
+  magicSchema.parse(dbObject);
 
 export const initDB = () => {
   const db = DB.getDB();
@@ -14,6 +17,12 @@ export const initDB = () => {
         id INTEGER PRIMARY KEY,
         key TEXT,
         value TEXT
+      ) STRICT
+    `);
+
+    db.exec(`
+      CREATE TABLE magic(
+        id INTEGER PRIMARY KEY
       ) STRICT
     `);
 };
@@ -56,6 +65,23 @@ export const insertLink = (link: Link) => {
     link.value,
   );
 };
+
+export const getMagic = () => {
+  const db = DB.getDB();
+
+  const all = db
+    .prepare("SELECT * FROM magic order by id")
+    .all();
+
+  return all.map((l) => magicSchema.parse(l));
+}
+
+export const insertMagic = () => {
+  const db = DB.getDB();
+
+  db.prepare("INSERT INTO magic DEFAULT VALUES").run(
+  );
+}
 
 export const seedDB = () => {
   const db = DB.getDB();

@@ -1,4 +1,5 @@
 import type { Link } from "@/lib/types";
+import { post } from "./api";
 
 export type FavoritesAction = {
   type: string;
@@ -26,3 +27,25 @@ export const favoritesReducer = (
 
   return state;
 };
+
+export type MagicState = { addedMagic: number }
+
+export const magicReducer = async (
+  state: MagicState,
+  { type }: { type: string }
+): Promise<MagicState> => {
+  switch (type) {
+    case "add":
+      try {
+        const result = await post('/magic', {})
+        if (!result.success) {
+          return state
+        }
+        return { addedMagic: state.addedMagic + 1 }
+      } catch {
+        return state
+      }
+  }
+
+  return state
+}
