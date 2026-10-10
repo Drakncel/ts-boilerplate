@@ -8,7 +8,7 @@ import { zValidator } from "@hono/zod-validator";
 import * as z from "zod";
 import { getCount, getLinkByKey, getLinkPage, getMagic, initDB, insertLink, insertMagic, seedDB } from "./repo.js";
 import { PAGE_SIZE } from "./constants.js";
-import { delay } from "./utils.js";
+import { delay, randInt } from "./utils.js";
 
 initDB();
 
@@ -112,7 +112,18 @@ app.post(
   async (c) => {
     try {
       // MAGIC TAKES TIME !
-      await delay(5000)
+      await delay(2000)
+
+      // MAGIC SOMETIMES FAIL UNEXPECTEDLY
+      const i = randInt(10)
+      if (i <= 1) {
+        throw new HTTPException(418, { message: "An unexpected gnome stole your magic" });
+      }
+
+      if (i <= 2) {
+        throw new HTTPException(418, { message: "An unexpected wizard redirected your magic elsewhere" });
+      }
+
       await insertMagic()
   
       c.status(201);

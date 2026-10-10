@@ -4,3 +4,5 @@ export const delay = async (ms: number = 500): Promise<void> =>
       resolve();
     }, ms),
   );
+
+export const randInt = (max: number): number => Math.floor(Math.random() * max);
